@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:version_0/components/custom_text_field.dart';
 import 'package:version_0/components/sutom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
       try {
         UserSignUp? userSignUp = await fetchUserSignUp(first_name, last_name,
             email, password, identification_no, date_of_birth);
-        print(userSignUp);
+        // print(userSignUp);
         if (userSignUp != null) {
           // Sign up successful, navigate to the login page
           Navigator.pushNamed(context, '/loginpage');
@@ -78,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
@@ -91,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Text(
                 "Sign Up",
                 style: GoogleFonts.carterOne(
-                  color: Color(0xFF003A45),
+                  color: const Color(0xFF003A45),
                   fontSize: 35,
                   fontWeight: FontWeight.w700,
                 ),
@@ -129,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               CustomTestField(
                 hintForTextField: "password",
-                obscureInputedText: false,
+                obscureInputedText: true,
                 myController: passwordController,
                 onChanged: (value) {},
                 suffixIcon: Icons.password,
@@ -139,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               CustomTestField(
                 hintForTextField: "password confirmation",
-                obscureInputedText: false,
+                obscureInputedText: true,
                 myController: passwordConfirmationController,
                 onChanged: (value) {},
                 suffixIcon: Icons.password_rounded,
@@ -171,7 +170,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: _signUserUp,
                     width: 100,
                     height: 40,
-                    color: Color(0xFF003A45)),
+                    color: const Color(0xFF003A45)),
               ]),
               const SizedBox(
                 height: 10,
@@ -182,15 +181,24 @@ class _SignUpPageState extends State<SignUpPage> {
                 endIndent: 100,
                 indent: 100,
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/loginpage');
-                },
-                child: const Text(
-                  'Already have an account? log in',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 3, 3, 3), fontSize: 18),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Already have an account?',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 3, 3, 3), fontSize: 18),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/loginpage');
+                    },
+                    child: const Text(
+                      ' log in',
+                      style: TextStyle(color: Color(0xFF003A45)),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 10,

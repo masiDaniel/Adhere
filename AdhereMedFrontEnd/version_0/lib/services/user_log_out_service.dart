@@ -1,7 +1,9 @@
 import 'package:http/http.dart' as http;
+import 'package:version_0/services/user_log_in_service.dart';
 
-const Map<String, String> headers = {
+Map<String, String> headers = {
   "Content-Type": "application/json",
+  'Authorization': 'Token $authToken',
 };
 
 Future logoutUser() async {

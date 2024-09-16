@@ -63,7 +63,7 @@ class _LogInPageState extends State<LogInPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: MediaQuery.of(context).size.height / 3,
+              height: MediaQuery.of(context).size.height / 2.5,
               width: double.infinity,
               decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -77,7 +77,7 @@ class _LogInPageState extends State<LogInPage> {
             ),
             Text('Login',
                 style: GoogleFonts.permanentMarker(
-                  color: Color(0xFF003A45),
+                  color: const Color(0xFF003A45),
                   fontSize: 50,
                   fontWeight: FontWeight.bold,
                 )),
@@ -94,7 +94,7 @@ class _LogInPageState extends State<LogInPage> {
             ),
             CustomTestField(
               hintForTextField: 'Password',
-              obscureInputedText: false,
+              obscureInputedText: true,
               myController: _passwordController,
               onChanged: (value) {},
               suffixIcon: Icons.visibility,
@@ -111,9 +111,31 @@ class _LogInPageState extends State<LogInPage> {
             const SizedBox(
               height: 15,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Dont have an account?',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 3, 3, 3), fontSize: 18),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/signuppage');
+                  },
+                  child: const Text(
+                    ' Create one',
+                    style: TextStyle(color: Color(0xFF003A45)),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
             const Text('Or Continue with'),
             const Divider(
-              thickness: 2,
+              thickness: 3,
               color: Color(0xFF003A45),
               endIndent: 100,
               indent: 100,

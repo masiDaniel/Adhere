@@ -58,28 +58,31 @@ class landingPage extends StatelessWidget {
             const SizedBox(
               height: 80,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomButton(
-                  buttonText: 'Sign Up',
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/signuppage');
-                  },
-                  width: 100,
-                  height: 50,
-                  color: const Color(0xFF003A45),
-                ),
-                CustomButton(
-                  buttonText: 'Log In',
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/loginpage');
-                  },
-                  width: 100,
-                  height: 50,
-                  color: const Color(0xFF003A45),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    buttonText: 'Sign Up',
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/signuppage');
+                    },
+                    width: 100,
+                    height: 50,
+                    color: const Color(0xFF003A45),
+                  ),
+                  CustomButton(
+                    buttonText: 'Log In',
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/loginpage');
+                    },
+                    width: 100,
+                    height: 50,
+                    color: const Color(0xFF003A45),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 20,

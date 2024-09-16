@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:version_0/components/sutom_button.dart';
 import 'package:version_0/models/prescriptions.dart';
 import 'package:version_0/services/post_prescription_service.dart';
@@ -8,9 +6,12 @@ import 'package:version_0/services/user_log_in_service.dart';
 import 'package:version_0/services/user_log_out_service.dart';
 import 'package:version_0/views/medication_prescription.dart';
 import 'package:version_0/views/prescription_form.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 
+///
+///use the mobile number as an identifier to populate the data.
+///
+///
 class DoctorsPage extends StatefulWidget {
   const DoctorsPage({super.key});
 
@@ -19,13 +20,11 @@ class DoctorsPage extends StatefulWidget {
 }
 
 class _DoctorsPageState extends State<DoctorsPage> {
-  late TooltipBehavior _tooltipBehavior;
   List<prescriptionDetails> Doctorsprescriptions = [];
   @override
   void initState() {
     super.initState();
     fetchDoctorsPrescriptions();
-    _tooltipBehavior = TooltipBehavior(enable: true);
   }
 
   Future<void> fetchDoctorsPrescriptions() async {
@@ -117,7 +116,7 @@ class _DoctorsPageState extends State<DoctorsPage> {
               height: 10,
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               height: 70,
               width: 400,
               decoration: BoxDecoration(
@@ -130,17 +129,28 @@ class _DoctorsPageState extends State<DoctorsPage> {
                     message: 'Notifications',
                     child: IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.notifications)),
+                        icon: const Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                        )),
                   ),
                   Tooltip(
                     message: 'Settings',
                     child: IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.settings)),
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Colors.white,
+                        )),
                   ),
                   Tooltip(
                     message: 'Log Out',
                     child: IconButton(
-                        onPressed: _logout, icon: const Icon(Icons.logout)),
+                        onPressed: _logout,
+                        icon: const Icon(
+                          Icons.logout,
+                          color: Colors.white,
+                        )),
                   ),
                 ],
               ),
@@ -165,12 +175,18 @@ class _DoctorsPageState extends State<DoctorsPage> {
                       width: 120,
                       height: 50,
                       color: const Color(0xFF003A45)),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   CustomButton(
                       buttonText: "Report",
                       onPressed: () {},
                       width: 120,
                       height: 50,
                       color: const Color(0xFF003A45)),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   CustomButton(
                       buttonText: "Report",
                       onPressed: () {},
@@ -181,33 +197,33 @@ class _DoctorsPageState extends State<DoctorsPage> {
               ),
             ),
 
-            SfCartesianChart(
-              primaryXAxis: const CategoryAxis(),
-              title: const ChartTitle(
-                  text: 'Your Prescription Stats',
-                  textStyle: TextStyle(
-                      color: Colors.blue, fontWeight: FontWeight.bold)),
-              legend: const Legend(isVisible: true),
-              tooltipBehavior: _tooltipBehavior,
-              series: <LineSeries<medicalData, String>>[
-                LineSeries<medicalData, String>(
-                  xValueMapper: (medicalData medical, _) => medical.doctorName,
-                  yValueMapper: (medicalData medical, _) =>
-                      medical.prescriptionCount,
-                  dataSource: <medicalData>[
-                    medicalData('daniel', 3),
-                    medicalData('paul', 0),
-                    medicalData('mark', 1),
-                    medicalData('denzel', 12),
-                    medicalData('bishop', 9),
-                    medicalData('nick', 0),
-                    medicalData('rick', 2),
-                    medicalData('jeff', 5),
-                  ],
-                  dataLabelSettings: const DataLabelSettings(isVisible: true),
-                )
-              ],
-            ),
+            // SfCartesianChart(
+            //   primaryXAxis: const CategoryAxis(),
+            //   title: const ChartTitle(
+            //       text: 'Your Prescription Statistics',
+            //       textStyle: TextStyle(
+            //           color: Colors.blue, fontWeight: FontWeight.bold)),
+            //   legend: const Legend(isVisible: true),
+            //   tooltipBehavior: _tooltipBehavior,
+            //   series: <LineSeries<medicalData, String>>[
+            //     LineSeries<medicalData, String>(
+            //       xValueMapper: (medicalData medical, _) => medical.doctorName,
+            //       yValueMapper: (medicalData medical, _) =>
+            //           medical.prescriptionCount,
+            //       dataSource: <medicalData>[
+            //         medicalData('daniel', 3),
+            //         medicalData('paul', 0),
+            //         medicalData('mark', 1),
+            //         medicalData('denzel', 12),
+            //         medicalData('bishop', 9),
+            //         medicalData('nick', 0),
+            //         medicalData('rick', 2),
+            //         medicalData('jeff', 5),
+            //       ],
+            //       dataLabelSettings: const DataLabelSettings(isVisible: true),
+            //     )
+            //   ],
+            // ),
             const SizedBox(
               height: 20,
             ),

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:version_0/models/medicine.dart';
 import 'package:http/http.dart' as http;
 import 'package:version_0/services/post_prescription_service.dart';
@@ -134,7 +133,45 @@ class _PrescriptionFormPageState extends State<PrescriptionFormPage> {
               const SizedBox(
                 height: 16,
               ),
-              // TextField(
+              const SizedBox(
+                height: 16,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    String patientName = _patientNameController.text;
+                    int? patientId = int.tryParse(_patientIdController.text);
+
+                    String instructions = _instructionsController.text;
+                    String diagnosis = _patientDiagnosisController.text;
+
+                    postPrescription(
+                        userId, patientId, instructions, diagnosis);
+
+                    // Show a SnackBar with a success message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            '$patientName\'s Prescription submitted successfully!'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
+
+                  // postPrescription(userId, patient, medication, dosage, instructions, created_at, images)
+                },
+                child: const Text('Submit Prescription'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+ // TextField(
               //   decoration: const InputDecoration(
               //     labelText: 'Search Medications',
               //     prefixIcon: Icon(Icons.search),
@@ -454,39 +491,3 @@ class _PrescriptionFormPageState extends State<PrescriptionFormPage> {
               //           )
               //   ],
               // ),
-              const SizedBox(
-                height: 16,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    String patientName = _patientNameController.text;
-                    int? patientId = int.tryParse(_patientIdController.text);
-
-                    String instructions = _instructionsController.text;
-                    String diagnosis = _patientDiagnosisController.text;
-
-                    postPrescription(
-                        userId, patientId, instructions, diagnosis);
-
-                    // Show a SnackBar with a success message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            '$patientName\'s Prescription submitted successfully!'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-
-                  // postPrescription(userId, patient, medication, dosage, instructions, created_at, images)
-                },
-                child: const Text('Submit Prescription'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

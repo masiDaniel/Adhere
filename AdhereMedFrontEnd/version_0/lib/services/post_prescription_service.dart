@@ -86,6 +86,7 @@ Future<List<prescriptionDetails>> getPatientsPrescriptions() async {
 
     if (response.statusCode == 200) {
       final List<dynamic> prescribedMedicationData = json.decode(response.body);
+      print("patient pprescription ${prescribedMedicationData}");
       final List<prescriptionDetails> prescribedMeds = prescribedMedicationData
           .map((json) => prescriptionDetails.fromJson(json))
           .toList();

@@ -1,17 +1,20 @@
+import 'package:version_0/models/medicine.dart';
+
 class prescriptionDetails {
   final int? prescription_id;
   final int? doctor_id;
   final int? patient_id;
   final String? instructions;
   final String? diagnosis;
+  final List<PrescribedMedication>? prescribedMedications;
 
-  prescriptionDetails({
-    required this.prescription_id,
-    required this.doctor_id,
-    required this.patient_id,
-    required this.instructions,
-    required this.diagnosis,
-  });
+  prescriptionDetails(
+      {required this.prescription_id,
+      required this.doctor_id,
+      required this.patient_id,
+      required this.instructions,
+      required this.diagnosis,
+      required this.prescribedMedications});
 
   factory prescriptionDetails.fromJson(Map<String, dynamic> json) {
     return prescriptionDetails(
@@ -20,6 +23,10 @@ class prescriptionDetails {
       patient_id: json['patient'],
       instructions: json['instructions'],
       diagnosis: json['diagnosis'],
+      prescribedMedications: (json['prescribed_medications'] as List<dynamic>?)
+          ?.map(
+              (medicationJson) => PrescribedMedication.fromJson(medicationJson))
+          .toList(),
     );
   }
 
@@ -30,6 +37,8 @@ class prescriptionDetails {
       'patient': patient_id,
       'instructions': instructions,
       'diagnosis': diagnosis,
+      'prescribed_medications':
+          prescribedMedications?.map((med) => med.toJson()).toList(),
     };
   }
 }

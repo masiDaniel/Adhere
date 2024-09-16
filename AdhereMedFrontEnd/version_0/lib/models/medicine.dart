@@ -45,7 +45,7 @@ class PostMedication {
 }
 
 class PrescribedMedication {
-  final int? PrescribedmedicationId;
+  final int? prescribedMedicationId; // Fixed naming convention
   final int? prescriptionId;
   final int? medicationId;
   final String? dosage;
@@ -55,47 +55,51 @@ class PrescribedMedication {
   final bool? evening;
   final int? duration;
 
-  PrescribedMedication(
-      this.PrescribedmedicationId,
-      this.prescriptionId,
-      this.medicationId,
-      this.dosage,
-      this.instructions,
-      this.morning,
-      this.afternoon,
-      this.evening,
-      this.duration);
+  PrescribedMedication({
+    required this.prescribedMedicationId,
+    required this.prescriptionId,
+    required this.medicationId,
+    required this.dosage,
+    required this.instructions,
+    required this.morning,
+    required this.afternoon,
+    required this.evening,
+    required this.duration,
+  });
 
-  // factory PrescribedMedication.fromJson(Map<String, dynamic> json) {
-  //   try {
-
-  //     return PrescribedMedication(
-  //       prescriptionmedicationId: json['id'] ?? '',
-  //       prescriptionId: json['prescription'] ?? '',
-  //       medication: json['medication'] ?? '',
-  //       dosage: json['dosage'] ?? '',
-  //       Instructions: json['instructions'] ?? '',
-  //       morning: json['morning'] ?? '',
-  //       afternoon: json['afternoon'] ?? '',
-  //       evening: json['evening'] ?? '',
-
-  //     );
-  //   } catch (e) {
-  //     print('Error parsing medicine details: $e');
-  //     // Return a default instance or throw an error depending on your use case
-  //     return PrescribedMedication(
-  //       prescriptionmedicationId
-  //       name: '',
-  //       dosage: '',
-  //       instructions: '',
-  //       images: '',
-  //     );
-  //   }
-  // }
+  factory PrescribedMedication.fromJson(Map<String, dynamic> json) {
+    try {
+      return PrescribedMedication(
+        prescribedMedicationId: json['id'] as int?,
+        prescriptionId: json['prescription'] as int?,
+        medicationId: json['medication'] as int?,
+        dosage: json['dosage'] as String?,
+        instructions: json['instructions'] as String?,
+        morning: json['morning'] as bool?,
+        afternoon: json['afternoon'] as bool?,
+        evening: json['evening'] as bool?,
+        duration: json['duration'] as int?,
+      );
+    } catch (e) {
+      print('Error parsing medicine details: $e');
+      // Return a default instance or throw an error depending on your use case
+      return PrescribedMedication(
+        prescribedMedicationId: null,
+        prescriptionId: null,
+        medicationId: null,
+        dosage: '',
+        instructions: '',
+        morning: false,
+        afternoon: false,
+        evening: false,
+        duration: 0,
+      );
+    }
+  }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': PrescribedmedicationId,
+      'id': prescribedMedicationId,
       'prescription': prescriptionId,
       'medication': medicationId,
       'dosage': dosage,
