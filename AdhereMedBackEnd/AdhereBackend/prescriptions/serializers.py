@@ -14,7 +14,7 @@ class PrescribedMedicationSerializer(serializers.ModelSerializer):
     
 
 class PrescriptionSerializer(serializers.ModelSerializer):
-    prescribed_medications = PrescribedMedicationSerializer(many=True, read_only=True)
+    prescribed_medications = PrescribedMedicationSerializer(many=True, read_only=True, source='prescribedmedication_set')
 
     class Meta:
         model = Prescription

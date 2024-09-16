@@ -22,6 +22,7 @@ class Prescription(models.Model):
     instructions = models.TextField()
     diagnosis = models.TextField(null=True, default='Adhere')
     created_at = models.DateTimeField(auto_now_add=True)
+    # created_at_date = models.DateField()
 
     class Meta:
         constraints = [
@@ -29,7 +30,7 @@ class Prescription(models.Model):
         ]
 
     def __str__(self):
-        return f"Prescription from (Dr) { self.doctor.user.first_name} to (Ptn) {self.patient.user.first_name}"
+        return f"Prescription from (Dr) { self.doctor.user.first_name} to (Ptn) {self.patient.user.first_name} created at {self.created_at}"
 
 class PrescribedMedication(models.Model):
     prescription = models.ForeignKey(Prescription, on_delete=models.CASCADE)

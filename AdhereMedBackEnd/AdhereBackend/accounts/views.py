@@ -2,30 +2,24 @@ from django.contrib.auth import authenticate, login, logout
 from .serializers import AccountSerializer, DoctorSerializer, MessageSerializer, PatientSerializer
 from knox.models import AuthToken
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework import status
 from rest_framework.response import Response
 from .models import CustomUser
-from rest_framework.authtoken.models import Token
 
-# Create your views here.
+# from rest_framework.authtoken.models import Token
+
 
 # Create your views here.
 class LoginApIView(APIView):
     """
-    handles User activities such as Login and Logout
+    handles Login 
     """
     permission_classes = [AllowAny]
 
     # TODO restrict these get request to users who are authenticated
-    def get(self, request, *args, **kwargs):
-        """
-        Handles loging out of the user
-        """
-        logout(request)
-        return Response({"message": "logged out succesfully."}, status=status.HTTP_200_OK)
-
+   
     def post(self, request, *args, **kwargs):
         """
         Handles log in of the user
@@ -55,6 +49,7 @@ class LoginApIView(APIView):
                 data['user_type'] = 'user'
             
 
+            #what does this do?
             login(request, user)
 
             # Generate token for the user
@@ -72,6 +67,23 @@ class LoginApIView(APIView):
                 }
             serializer = MessageSerializer(data)
             return Response(serializer.data, status=status.HTTP_403_FORBIDDEN)
+
+
+
+class LogOutApIView(APIView):
+    """
+    handles Login 
+    """
+  
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles loging out of the user
+        """
+        logout(request)
+        return Response({"message": "logged out succesfully."}, status=status.HTTP_200_OK)
+
 
 
 class RegisterUsersAPIView(APIView):

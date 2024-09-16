@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'knox',
     # Custom apps
+    
+    #why the difference between the below two yet they are both apps
     'accounts.apps.AccountsConfig',
     'prescriptions'
 
