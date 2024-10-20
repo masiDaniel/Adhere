@@ -4,7 +4,7 @@ import 'package:version_0/models/prescriptions.dart';
 import 'package:version_0/services/post_prescription_service.dart';
 import 'package:version_0/services/user_log_in_service.dart';
 import 'package:version_0/services/user_log_out_service.dart';
-import 'package:version_0/views/medication_prescription.dart';
+import 'package:version_0/views/Doctors/medication_prescription.dart';
 import 'package:version_0/views/prescription_form.dart';
 import 'package:intl/intl.dart';
 
@@ -164,6 +164,7 @@ class _DoctorsPageState extends State<DoctorsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // more buttons can be added based on the requirements.
                   CustomButton(
                       buttonText: "Prescribe",
                       onPressed: () {
@@ -178,52 +179,9 @@ class _DoctorsPageState extends State<DoctorsPage> {
                   const SizedBox(
                     width: 20,
                   ),
-                  CustomButton(
-                      buttonText: "Report",
-                      onPressed: () {},
-                      width: 120,
-                      height: 50,
-                      color: const Color(0xFF003A45)),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  CustomButton(
-                      buttonText: "Report",
-                      onPressed: () {},
-                      width: 120,
-                      height: 50,
-                      color: const Color(0xFF003A45)),
                 ],
               ),
             ),
-
-            // SfCartesianChart(
-            //   primaryXAxis: const CategoryAxis(),
-            //   title: const ChartTitle(
-            //       text: 'Your Prescription Statistics',
-            //       textStyle: TextStyle(
-            //           color: Colors.blue, fontWeight: FontWeight.bold)),
-            //   legend: const Legend(isVisible: true),
-            //   tooltipBehavior: _tooltipBehavior,
-            //   series: <LineSeries<medicalData, String>>[
-            //     LineSeries<medicalData, String>(
-            //       xValueMapper: (medicalData medical, _) => medical.doctorName,
-            //       yValueMapper: (medicalData medical, _) =>
-            //           medical.prescriptionCount,
-            //       dataSource: <medicalData>[
-            //         medicalData('daniel', 3),
-            //         medicalData('paul', 0),
-            //         medicalData('mark', 1),
-            //         medicalData('denzel', 12),
-            //         medicalData('bishop', 9),
-            //         medicalData('nick', 0),
-            //         medicalData('rick', 2),
-            //         medicalData('jeff', 5),
-            //       ],
-            //       dataLabelSettings: const DataLabelSettings(isVisible: true),
-            //     )
-            //   ],
-            // ),
             const SizedBox(
               height: 20,
             ),
@@ -235,7 +193,17 @@ class _DoctorsPageState extends State<DoctorsPage> {
             const SizedBox(
               height: 20,
             ),
-            const Text('prescriptions'),
+            const Text(
+              'Prescriptions',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+
             Expanded(
               child: Container(
                 child: Doctorsprescriptions.isEmpty
@@ -244,44 +212,84 @@ class _DoctorsPageState extends State<DoctorsPage> {
                         itemCount: Doctorsprescriptions.length,
                         itemBuilder: (context, index) {
                           final prescription = Doctorsprescriptions[index];
+
                           // Basic error handling: Check if diagnosis and instructions are not null
                           if (prescription.diagnosis == null ||
                               prescription.instructions == null) {
-                            return InkWell(
-                              onTap: () {
-                                print(
-                                    'tapped on prescription with ID: ${prescription.prescription_id}');
-                              },
-                              child: const ListTile(
-                                title:
-                                    Text('Error loading prescription details.'),
-                                subtitle: Text('Please check the data source.'),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0,
+                                  vertical:
+                                      8.0), // Space on sides and between tiles
+                              child: InkWell(
+                                onTap: () {
+                                  print(
+                                      'tapped on prescription with ID: ${prescription.prescription_id}');
+                                },
+                                child: const ListTile(
+                                  title: Text(
+                                      'Error loading prescription details.'),
+                                  subtitle:
+                                      Text('Please check the data source.'),
+                                ),
                               ),
                             );
                           }
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PrescriptionDetailPage(
-                                      prescriptionId:
-                                          prescription.prescription_id),
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical:
+                                    8.0), // Space on sides and between tiles
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PrescriptionDetailPage(
+                                            prescriptionId:
+                                                prescription.prescription_id),
+                                  ),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    30.0), // Circular radius
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    color: Colors
+                                        .white, // Background color for tile
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 7,
+                                        offset: const Offset(
+                                            0, 3), // Shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    leading: const Icon(Icons.medication),
+                                    trailing: const Icon(
+                                        Icons.arrow_forward_outlined),
+                                    title: Text(
+                                      'Diagnosis: ${prescription.diagnosis ?? 'N/A'}',
+                                    ),
+                                    subtitle: Text(
+                                      'Instructions: ${prescription.instructions ?? 'N/A'}',
+                                    ),
+                                  ),
                                 ),
-                              );
-                            },
-                            child: ListTile(
-                              title: Text(
-                                  'Diagnosis: ${prescription.diagnosis ?? 'N/A'}'),
-                              subtitle: Text(
-                                  'Instructions: ${prescription.instructions ?? 'N/A'}'),
-                              // Add more details if needed
+                              ),
                             ),
                           );
                         },
                       ),
               ),
-            ),
+            )
           ],
         ),
       ),

@@ -74,9 +74,9 @@ class MedicationForPrsescrition {
   final int? medication_id;
   final String? dosage;
   final String? instructions;
-  final bool? moring;
-  final bool? afternoon;
-  final bool? evening;
+  bool moring;
+  bool afternoon;
+  bool evening;
   final int? duration;
 
   MedicationForPrsescrition(

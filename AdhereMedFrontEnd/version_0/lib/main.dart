@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:version_0/views/Doctors_view.dart';
-import 'package:version_0/views/home_page.dart';
+import 'package:version_0/views/Doctors/Doctors_view.dart';
+import 'package:version_0/views/patients/home_page.dart';
 import 'package:version_0/views/landing_page.dart';
 import 'package:version_0/views/prescription_form.dart';
 import 'package:version_0/views/profile_page.dart';
 import 'package:version_0/views/sign_in.dart';
 import 'package:version_0/views/sign_up.dart';
-import 'package:version_0/views/doctor_sign_up.dart';
+import 'package:version_0/views/Doctors/doctor_sign_up.dart';
 import 'package:version_0/views/splash_screen.dart';
 
 void main() {

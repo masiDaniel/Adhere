@@ -1,10 +1,12 @@
 class MedicineDetails {
-  late final String name;
-  late final String dosage;
-  late final String instructions;
-  late final String images;
+  int? medicationId;
+  String name;
+  String? dosage;
+  String? instructions;
+  String images;
 
   MedicineDetails({
+    required this.medicationId,
     required this.name,
     required this.dosage,
     required this.instructions,
@@ -15,6 +17,7 @@ class MedicineDetails {
     try {
       // print('Parsing JSON for MedicineDetails: $json');
       return MedicineDetails(
+        medicationId: json['id'] ?? 0,
         name: json['name'] ?? '',
         dosage: json['dosage'] ?? '',
         instructions: json['instructions'] ?? '',
@@ -24,6 +27,7 @@ class MedicineDetails {
       print('Error parsing medicine details: $e');
       // Return a default instance or throw an error depending on your use case
       return MedicineDetails(
+        medicationId: 0,
         name: '',
         dosage: '',
         instructions: '',

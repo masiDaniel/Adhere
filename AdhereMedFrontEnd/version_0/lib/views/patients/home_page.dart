@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:version_0/components/custom_text_field.dart';
 import 'package:version_0/models/medicine.dart';
 import 'package:version_0/models/prescriptions.dart';
 import 'package:version_0/services/post_prescription_service.dart';
@@ -119,15 +118,15 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    CustomTestField(
-                      hintForTextField: 'search',
-                      obscureInputedText: false,
-                      myController: searchController,
-                      onChanged: (value) {
-                        print(value);
-                      },
-                      suffixIcon: Icons.search,
-                    ),
+                    // CustomTestField(
+                    //   hintForTextField: 'search',
+                    //   obscureInputedText: false,
+                    //   myController: searchController,
+                    //   onChanged: (value) {
+                    //     print(value);
+                    //   },
+                    //   suffixIcon: Icons.search,
+                    // ),
                   ],
                 ),
               ),
@@ -237,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: ListTile(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                                 tileColor:
                                     const Color.fromARGB(255, 57, 150, 142),

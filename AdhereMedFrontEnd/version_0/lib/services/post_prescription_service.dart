@@ -5,8 +5,8 @@ import 'package:version_0/models/prescriptions.dart';
 import 'package:version_0/services/user_log_in_service.dart';
 
 Future postPrescription(
-  int? doctor_id,
-  int? patient_id,
+  int? doctorId,
+  int? patientId,
   String instructions,
   String diagnosis,
 ) async {
@@ -19,25 +19,19 @@ Future postPrescription(
       Uri.parse("http://127.0.0.1:8000/prescriptions/doctorpostprescription/"),
       headers: headers,
       body: jsonEncode({
-        "doctor": doctor_id,
-        "patient": patient_id,
+        "doctor": doctorId,
+        "patient": patientId,
         "instructions": instructions,
         "diagnosis": diagnosis,
       }),
     );
 
-    if (response.statusCode == 200) {
+    //look for abetter wy of doing this the return statement
+    if (response.statusCode == 201) {
       print('prescription posted succesfully!');
+      return 201;
     } else {
       print('failed to post prescription: ${response.statusCode}');
-      print(
-        jsonEncode({
-          "doctor": doctor_id,
-          "patient": patient_id,
-          "instructions": instructions,
-          "diagnosis": diagnosis,
-        }),
-      );
     }
   } catch (e) {
     print('error positng prescription: $e');

@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:version_0/models/prescriptions.dart';
 import 'package:version_0/services/user_log_in_service.dart';
 
+List<MedicineDetails>? medicinesTouse;
+
 class PrescriptionDetailPage extends StatefulWidget {
   final int? prescriptionId;
 
@@ -16,6 +18,9 @@ class PrescriptionDetailPage extends StatefulWidget {
 }
 
 class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
+  // late List<bool> isPressedMorning = [];
+  // late List<bool> isPressedAfternoon = [];
+  // late List<bool> isPressedEvening = [];
   bool isPressedMorning = false;
   bool isPressedAfternoon = false;
   bool isPressedEvening = false;
@@ -24,10 +29,18 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
   List<MedicineDetails> _medicines = [];
   List<String> filteredMedicines = [];
 
+  late int duration;
+
   @override
   void initState() {
     super.initState();
     fetchMedications();
+    // isPressedMorning =
+    //     List.generate(selectedMedicines.length, (index) => false);
+    // isPressedAfternoon =
+    //     List.generate(selectedMedicines.length, (index) => false);
+    // isPressedEvening =
+    //     List.generate(selectedMedicines.length, (index) => false);
   }
 
   Map<String, String> headers = {
@@ -50,6 +63,8 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
         // If the request is successful, parse the response body
         // and update the list of medications
         List<dynamic> data = json.decode(response.body);
+        medicinesTouse =
+            data.map((item) => MedicineDetails.fromJson(item)).toList();
 
         setState(() {
           _medicines =
@@ -70,25 +85,29 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
   }
 
   Future<void> postMedicationDetails() async {
+    print("these are the selected medicines${selectedMedicines}");
     try {
       final List<Future<void>> postRequests = [];
+
       for (var medicine in selectedMedicines) {
         final medication = MedicationForPrsescrition(
           prescription_id: widget.prescriptionId,
           // problem here
-          medication_id: 2,
+          medication_id: medicine.medicationId,
           dosage: medicine.dosage,
           instructions: medicine.instructions,
           moring: isPressedMorning,
           afternoon: isPressedAfternoon,
           evening: isPressedEvening,
-          duration: 5,
+          duration: duration,
         );
 
         final headersWithToken = {
           ...headers,
           'Authorization': 'Token $authToken',
         };
+
+        print(jsonEncode(medication.tojson()));
 
         postRequests.add(http.post(
           Uri.parse(
@@ -102,9 +121,9 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
 
       setState(() {
         selectedMedicines.clear();
-        isPressedMorning = false;
-        isPressedAfternoon = false;
-        isPressedEvening = false;
+        // isPressedMorning = false;
+        // isPressedAfternoon = false;
+        // isPressedEvening = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -125,6 +144,9 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('selectedMedicines length: ${selectedMedicines.length}');
+    // print('isPressedMorning length: ${isPressedMorning.length}');
+
     String baseUrl = 'http://127.0.0.1:8000';
     return Scaffold(
       appBar: AppBar(
@@ -163,15 +185,21 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                           final medicineName = filteredMedicines[index];
                           final medicine = _medicines
                               .firstWhere((med) => med.name == medicineName);
+
+                          // Check if the medicine is selected
+                          final isSelected = selectedMedicines
+                              .any((element) => element.name == medicine.name);
+
                           return CheckboxListTile(
                               title: Text(medicine.name),
-                              value: selectedMedicines
-                                  .any((element) => element.name == medicine),
+                              value: isSelected,
                               onChanged: (value) {
                                 setState(() {
-                                  if (value!) {
+                                  if (value == true) {
+                                    // add to selected if checked
                                     selectedMedicines.add(medicine);
                                   } else {
+                                    // Remove from selected if unchecked
                                     selectedMedicines.removeWhere((element) =>
                                         element.name == medicine.name);
                                   }
@@ -189,15 +217,15 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                 const Text('Selected medicines:'),
                 selectedMedicines.isEmpty
                     ? Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         child: Container(
                             height: 50,
                             width: 200,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
                                 color: Colors.black),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'No medicines selected yet',
                                 style: TextStyle(color: Colors.white),
@@ -211,6 +239,8 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                             itemCount: selectedMedicines.length,
                             itemBuilder: (context, index) {
                               final selectedMedicine = selectedMedicines[index];
+                              print(
+                                  'selected medicine index${selectedMedicines[index]}');
 
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
@@ -310,6 +340,16 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                                             const SizedBox(
                                               height: 5,
                                             ),
+                                            TextFormField(
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  duration = value as int;
+                                                });
+                                              },
+                                              decoration: const InputDecoration(
+                                                labelText: 'Duration',
+                                              ),
+                                            ),
 
                                             // add a boolean for each drug to indicate moring afternoon or evening
                                             const SizedBox(
@@ -324,7 +364,12 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                                                   GestureDetector(
                                                     onTap: () {
                                                       setState(() {
-                                                        // Toggle the value of isPressed
+                                                        // Toggle the value of isPressed for the current medicine
+                                                        // isPressedMorning[
+                                                        //         index] =
+                                                        //     !isPressedMorning[
+                                                        //         index];
+
                                                         isPressedMorning =
                                                             !isPressedMorning;
                                                       });

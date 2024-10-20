@@ -145,17 +145,34 @@ class _PrescriptionFormPageState extends State<PrescriptionFormPage> {
                     String instructions = _instructionsController.text;
                     String diagnosis = _patientDiagnosisController.text;
 
-                    postPrescription(
+                    // there is an issue here that needs to be sorted.
+                    dynamic result = postPrescription(
                         userId, patientId, instructions, diagnosis);
 
+                    print("the result is${result}");
                     // Show a SnackBar with a success message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            '$patientName\'s Prescription submitted successfully!'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
+                    if (result == 201) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              '$patientName\'s Prescription submitted successfully!'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+
+                      _patientNameController.clear();
+                      _patientIdController.clear();
+                      _instructionsController.clear();
+                      _patientDiagnosisController.clear();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              '$patientName\'s Prescription not submitted!'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                   }
 
                   // postPrescription(userId, patient, medication, dosage, instructions, created_at, images)
@@ -169,325 +186,3 @@ class _PrescriptionFormPageState extends State<PrescriptionFormPage> {
     );
   }
 }
-
-
- // TextField(
-              //   decoration: const InputDecoration(
-              //     labelText: 'Search Medications',
-              //     prefixIcon: Icon(Icons.search),
-              //   ),
-              //   onChanged: (value) {
-              //     setState(() {
-              //       _filteredMedicines = _medicines
-              //           .where((medicine) => medicine.name
-              //               .toLowerCase()
-              //               .contains(value.toLowerCase()))
-              //           .map((medicine) => medicine.name)
-              //           .toList();
-              //     });
-              //   },
-              // ),
-              // const SizedBox(height: 16),
-              // _filteredMedicines.isEmpty
-              //     ? const Padding(
-              //         padding: EdgeInsets.symmetric(vertical: 16),
-              //         child: Text("Medication not found"),
-              //       )
-              //     : SizedBox(
-              //         height: 200,
-              //         child: ListView.builder(
-              //             itemCount: _filteredMedicines.length,
-              //             itemBuilder: (context, index) {
-              //               final medicine = _filteredMedicines[index];
-              //               return CheckboxListTile(
-              //                   title: Text(medicine),
-              //                   value: selectedMedicines
-              //                       .any((element) => element.name == medicine),
-              //                   onChanged: (value) {
-              //                     setState(() {
-              //                       if (value!) {
-              //                         selectedMedicines.add(MedicineDetails(
-              //                             name: medicine,
-              //                             dosage: '',
-              //                             instructions: '',
-              //                             images: ''));
-              //                       } else {
-              //                         selectedMedicines.removeWhere((element) =>
-              //                             element.name == medicine);
-              //                       }
-              //                     });
-              //                   });
-              //             }),
-              //       ),
-              // const SizedBox(height: 16),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     const SizedBox(
-              //       height: 16,
-              //     ),
-              //     const Text('Selected medicines:'),
-              //     selectedMedicines.isEmpty
-              //         ? const Padding(
-              //             padding: EdgeInsets.symmetric(vertical: 16),
-              //             child: Text('No medicines selected yet'),
-              //           )
-              //         : SizedBox(
-              //             width: 800,
-              //             height: 300,
-              //             child: ListView.builder(
-              //                 itemCount: selectedMedicines.length,
-              //                 itemBuilder: (context, index) {
-              //                   final selectedMedicine =
-              //                       selectedMedicines[index];
-              //                   print(
-              //                       'Image URL: ${baseUrl + selectedMedicine.images}');
-              //                   print('Base URL: $baseUrl');
-              //                   print('Image Path: ${selectedMedicine.images}');
-
-              //                   // Concatenate base URL and image path to form the complete image URL
-              //                   String imageUrl =
-              //                       baseUrl + selectedMedicine.images;
-              //                   print('Complete Image URL: $imageUrl');
-              //                   return Padding(
-              //                     padding: const EdgeInsets.only(bottom: 16),
-              //                     child: Row(
-              //                       children: [
-              //                         Container(
-              //                           margin: const EdgeInsets.symmetric(
-              //                               horizontal: 8),
-              //                           height: 200,
-              //                           width: 250,
-              //                           child: ClipRRect(
-              //                             borderRadius: BorderRadius.circular(
-              //                                 10), // Adjust the radius as needed
-              //                             child: Column(
-              //                               children: [
-              //                                 ClipRRect(
-              //                                   borderRadius: BorderRadius.circular(
-              //                                       10), // Adjust the radius as needed
-              //                                   child: Container(
-              //                                     color: const Color.fromARGB(
-              //                                         255, 20, 166, 211),
-              //                                     child: Padding(
-              //                                       padding:
-              //                                           const EdgeInsets.all(
-              //                                               8.0),
-              //                                       child: (selectedMedicine
-              //                                                   .images)
-              //                                               .isNotEmpty
-              //                                           ? Image.network(
-              //                                               baseUrl +
-              //                                                   selectedMedicine
-              //                                                       .images,
-              //                                               height: 160,
-              //                                               width: 250,
-              //                                               fit: BoxFit.cover,
-              //                                             )
-              //                                           : Image.asset(
-              //                                               'assets/images/logo.jpeg', // Path to placeholder image
-              //                                               height: 160,
-              //                                               width: 250,
-              //                                               fit: BoxFit.cover,
-              //                                             ),
-              //                                     ),
-              //                                   ),
-              //                                 ),
-              //                                 const SizedBox(
-              //                                   height: 4,
-              //                                 ),
-              //                                 Text(
-              //                                   selectedMedicine.name,
-              //                                   style: const TextStyle(
-              //                                       color: Color.fromARGB(
-              //                                           255, 0, 0, 0)),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                           ),
-              //                         ),
-              //                         const SizedBox(
-              //                           width: 5,
-              //                         ),
-              //                         Expanded(
-              //                             flex: 2,
-              //                             child: Column(
-              //                               crossAxisAlignment:
-              //                                   CrossAxisAlignment.start,
-              //                               children: [
-              //                                 const SizedBox(
-              //                                   height: 5,
-              //                                 ),
-
-              //                                 // there is an issue with the inputs for these, set state is not working to my advantage
-              //                                 //  alsp how will i get the input from the input forms to my service?
-
-              //                                 TextFormField(
-              //                                   onChanged: (value) {
-              //                                     setState(() {
-              //                                       selectedMedicines[index]
-              //                                           .dosage = value;
-              //                                     });
-              //                                   },
-              //                                   decoration:
-              //                                       const InputDecoration(
-              //                                     labelText: 'Dosage',
-              //                                   ),
-              //                                 ),
-              //                                 const SizedBox(
-              //                                   height: 5,
-              //                                 ),
-              //                                 TextFormField(
-              //                                   onChanged: (value) {
-              //                                     setState(() {
-              //                                       selectedMedicines[index]
-              //                                           .instructions = value;
-              //                                     });
-              //                                   },
-              //                                   decoration:
-              //                                       const InputDecoration(
-              //                                     labelText: 'Instructions',
-              //                                   ),
-              //                                 ),
-              //                                 const SizedBox(
-              //                                   height: 5,
-              //                                 ),
-
-              //                                 // add a boolean for each drug to indicate moring afternoon or evening
-              //                                 const SizedBox(
-              //                                   height: 35,
-              //                                 ),
-              //                                 Row(
-              //                                   mainAxisAlignment:
-              //                                       MainAxisAlignment.start,
-              //                                   children: [
-              //                                     GestureDetector(
-              //                                       onTap: () {
-              //                                         setState(() {
-              //                                           // Toggle the value of isPressed
-              //                                           isPressedMorning =
-              //                                               !isPressedMorning;
-              //                                         });
-              //                                       },
-              //                                       child: Material(
-              //                                         borderRadius:
-              //                                             BorderRadius.circular(
-              //                                                 30),
-              //                                         elevation: 5,
-              //                                         child: ClipRRect(
-              //                                           borderRadius:
-              //                                               BorderRadius
-              //                                                   .circular(30),
-              //                                           child: Container(
-              //                                             height: 60,
-              //                                             width: 70,
-              //                                             color:
-              //                                                 isPressedMorning
-              //                                                     ? Colors.blue
-              //                                                     : Colors.grey,
-              //                                             child: const Center(
-              //                                               child: Text(
-              //                                                 'Morning',
-              //                                                 style: TextStyle(
-              //                                                     color: Colors
-              //                                                         .white),
-              //                                               ),
-              //                                             ),
-              //                                           ),
-              //                                         ),
-              //                                       ),
-              //                                     ),
-              //                                     const SizedBox(
-              //                                       width: 10,
-              //                                     ),
-              //                                     GestureDetector(
-              //                                       onTap: () {
-              //                                         setState(() {
-              //                                           // Toggle the value of isPressed
-              //                                           isPressedAfternoon =
-              //                                               !isPressedAfternoon;
-              //                                         });
-              //                                       },
-              //                                       child: Material(
-              //                                         borderRadius:
-              //                                             BorderRadius.circular(
-              //                                                 30),
-              //                                         elevation: 5,
-              //                                         child: ClipRRect(
-              //                                           borderRadius:
-              //                                               BorderRadius
-              //                                                   .circular(30),
-              //                                           child: Container(
-              //                                             height: 60,
-              //                                             width: 70,
-              //                                             color:
-              //                                                 isPressedAfternoon
-              //                                                     ? Colors.blue
-              //                                                     : Colors.grey,
-              //                                             child: const Center(
-              //                                               child: Text(
-              //                                                 'Afternoon',
-              //                                                 style: TextStyle(
-              //                                                     color: Colors
-              //                                                         .white),
-              //                                               ),
-              //                                             ),
-              //                                           ),
-              //                                         ),
-              //                                       ),
-              //                                     ),
-              //                                     const SizedBox(
-              //                                       width: 10,
-              //                                     ),
-
-              //                                     // shoiuld have a clickale widget that turns bluewhen pressed but normally is grey
-              //                                     GestureDetector(
-              //                                       onTap: () {
-              //                                         setState(() {
-              //                                           // Toggle the value of isPressed
-              //                                           isPressedEvening =
-              //                                               !isPressedEvening;
-              //                                         });
-              //                                       },
-              //                                       child: Material(
-              //                                         borderRadius:
-              //                                             BorderRadius.circular(
-              //                                                 30),
-              //                                         elevation: 5,
-              //                                         child: ClipRRect(
-              //                                           borderRadius:
-              //                                               BorderRadius
-              //                                                   .circular(30),
-              //                                           child: Container(
-              //                                             height: 60,
-              //                                             width: 70,
-              //                                             color:
-              //                                                 isPressedEvening
-              //                                                     ? Colors.blue
-              //                                                     : Colors.grey,
-              //                                             child: const Center(
-              //                                               child: Text(
-              //                                                 'evening',
-              //                                                 style: TextStyle(
-              //                                                     color: Colors
-              //                                                         .white),
-              //                                               ),
-              //                                             ),
-              //                                           ),
-              //                                         ),
-              //                                       ),
-              //                                     ),
-              //                                   ],
-              //                                 ),
-              //                               ],
-              //                             )),
-              //                         const SizedBox(
-              //                           height: 16,
-              //                         ),
-              //                       ],
-              //                     ),
-              //                   );
-              //                 }),
-              //           )
-              //   ],
-              // ),
